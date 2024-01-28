@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "PZU5tgkxdZUJh1uHD0oRzh1z5IToeZeAPjfiabZoIlE3Vehd1kMN7jOAUbotOX8QgqsIJDzMVSCp4yHNebN9qg==",
+  "dgSpecHash": "qJp9Z5VUsCV3uH+ZTn3mkg2BIcDzlPvdrLd0p1NL3rOJUAEdKZGqsoxJ+EcMP3wKdaZrVlLqoqsl1q3HpWR/rA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\roxas\\Documents\\PersonalProjects\\Bookstore2\\Bookstore2.csproj",
+  "projectFilePath": "C:\\Users\\roxas\\Documents\\PersonalProjects\\BookstoreProject\\Bookstore2\\Bookstore2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\roxas\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\roxas\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",

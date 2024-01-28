@@ -1203,11 +1203,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\roxas\\Documents\\PersonalProjects\\Bookstore2\\Bookstore2.csproj",
+      "projectUniqueName": "C:\\Users\\roxas\\Documents\\PersonalProjects\\BookstoreProject\\Bookstore2\\Bookstore2.csproj",
       "projectName": "Bookstore2",
-      "projectPath": "C:\\Users\\roxas\\Documents\\PersonalProjects\\Bookstore2\\Bookstore2.csproj",
+      "projectPath": "C:\\Users\\roxas\\Documents\\PersonalProjects\\BookstoreProject\\Bookstore2\\Bookstore2.csproj",
       "packagesPath": "C:\\Users\\roxas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\roxas\\Documents\\PersonalProjects\\Bookstore2\\obj\\",
+      "outputPath": "C:\\Users\\roxas\\Documents\\PersonalProjects\\BookstoreProject\\Bookstore2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,0 +1,24 @@
+.content {
+    min-width: 1400px;
+}
+
+.adminTable {
+    border: 1px solid #dee2e6;
+    text-align: center;
+}
+
+.addBorder {
+    border: 1px solid #dee2e6;
+}
+
+.buttonCell {
+    width: 130px;
+}
+
+.tableButton {
+    width: 100px;
+}
+
+.tableHeader {
+    padding: 20px 10px;
+}
