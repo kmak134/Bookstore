@@ -14,10 +14,10 @@ namespace Bookstore2.Controllers
             _booksService = booksService;
         }
 
-        [HttpGet]
-        public async Task<List<Book>> GetBooks()
+        [HttpGet()]
+        public async Task<List<Book>> GetBooks(string? searchString)
         {
-            return await _booksService.GetBooks();
+            return await _booksService.GetBooks(searchString);
         }
 
         [HttpGet("{id:length(24)}", Name = "GetBook")]
@@ -31,6 +31,12 @@ namespace Bookstore2.Controllers
             }
 
             return book;
+        }
+
+        [HttpGet("{sortOrder}", Name = "GetSortedBooks")]
+        public async Task<List<Book>> GetSortedBooks(string sortOrder, string? searchString)
+        {
+            return await _booksService.GetSortedBooks(sortOrder, searchString);
         }
 
 

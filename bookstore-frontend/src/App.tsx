@@ -12,10 +12,28 @@ import AppHeader from './components/AppHeader';
 const App = () => {
   const BASE_URL = 'https://localhost:7235/api/Bookstore';
   const [books, setBooks] = useState<Book[]>([]);
+  const [sortOrder, setSortOrder] = useState<string>("");
+  const [searchString, setSearchString] = useState<string>('');
 
   useEffect(() => {
     getBooks();
   }, []);
+
+  useEffect(() => {
+    if (searchString) {
+      getSortedBooks(sortOrder, searchString);
+    } else {
+      getSortedBooks(sortOrder);
+    }
+  }, [sortOrder]);
+
+  useEffect(() => {
+    if (sortOrder) {
+      getSortedBooks(sortOrder, searchString);
+    } else {
+      getBooks(searchString);
+    }
+  }, [searchString])
 
   const addBook = async(book: Book) => {
     try {
@@ -26,13 +44,33 @@ const App = () => {
     }
   }
 
-  const getBooks = async() => {
+  const getBooks = async(searchString?: string) => {
     try {
-      const { data } = await axios.get(`${BASE_URL}`);
-      setBooks(data);
+      if (searchString) {
+        const { data } = await axios.get(`${BASE_URL}`, {params: {searchString: searchString}});
+        setBooks(data);
+      } else {
+        const { data } = await axios.get(`${BASE_URL}`);
+        setBooks(data);
+      }
     } catch (e) {
       console.log('Error in getBooks: ', e);
     } 
+  }
+
+  const getSortedBooks = async(sortOrder: string, searchString?: string) => {
+    try {
+      if (searchString) {
+        const { data } = await axios.get(`${BASE_URL}/${sortOrder}`, {params: {searchString: searchString}});
+        setBooks(data);
+      } else {
+        const { data } = await axios.get(`${BASE_URL}/${sortOrder}`);
+        setBooks(data);
+      }
+      
+    } catch (e) {
+      console.log('Error in getSortedBooks: ', e);
+    }
   }
 
   const editBook = async(book: Book) => {
@@ -55,7 +93,7 @@ const App = () => {
 
   return <div className="app-container">
     <AppHeader />
-    <AdminPage books={books} addBook={addBook} deleteBook={deleteBook} editBook={editBook}/>
+    <AdminPage books={books} setBookOrder={setSortOrder} addBook={addBook} deleteBook={deleteBook} editBook={editBook} setSearchQuery={setSearchString}/>
   </div>
 }
 

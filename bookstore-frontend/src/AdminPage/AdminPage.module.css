@@ -21,4 +21,28 @@
 
 .tableHeader {
     padding: 20px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
+
+.headerCellDiv {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.sortArrow {
+    height: 20px;
+    align-self: center;
+}
+
+.headerCell:hover {
+    cursor: pointer;
+}
+
+.searchbar {
+    display: flex !important;
+    width: 50%;
+}
+
