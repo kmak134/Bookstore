@@ -3,6 +3,7 @@ import Book from "../models/Book";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Collapse from 'react-bootstrap/Collapse';
+import Pagination from 'react-bootstrap/Pagination';
 import { useState } from "react";
 import AddBookModal from "./AddBookModal";
 import styles from "./AdminPage.module.css"
@@ -10,14 +11,16 @@ import EditBookModal from "./EditBookModal";
 
 interface Props {
     books: Book[];
-    setBookOrder: (order: string) => void
-    addBook: (book: Book) => Promise<void>
-    deleteBook: (bookId: string) => Promise<void>
-    editBook: (book: Book) => Promise<void>
-    setSearchQuery: (string: string) => void
+    currPage: number;
+    setBookOrder: (order: string) => void;
+    addBook: (book: Book) => Promise<void>;
+    deleteBook: (bookId: string) => Promise<void>;
+    editBook: (book: Book) => Promise<void>;
+    setSearchQuery: (string: string) => void;
+    setCurrPage: (page: number) => void;
 }
 
-const AdminPage = ({books, setBookOrder, addBook, deleteBook, editBook, setSearchQuery}: Props) => {
+const AdminPage = ({books, currPage, setBookOrder, addBook, deleteBook, editBook, setSearchQuery, setCurrPage}: Props) => {
     const [showAddBookModal, setShowAddBookModal] = useState<boolean>(false);
     const [showEditBookModal, setShowEditBookModal] = useState<boolean>(false);
     const [searchBarVal, setSearchBarVal] = useState<string>("");
@@ -39,7 +42,6 @@ const AdminPage = ({books, setBookOrder, addBook, deleteBook, editBook, setSearc
     }
 
     const handleSearchSubmit = () => {
-        console.log(searchBarVal);
         setSearchQuery(searchBarVal);
     }
 
@@ -47,6 +49,18 @@ const AdminPage = ({books, setBookOrder, addBook, deleteBook, editBook, setSearc
         if (e.key == "Enter") {
             handleSearchSubmit();
             e.preventDefault();
+        }
+    }
+
+    const onPrevPagePress = () => {
+        if (currPage > 1) {
+            setCurrPage(currPage - 1);
+        }
+    }
+
+    const onNextPagePress = () => {
+        if (books.length == 10) {
+            setCurrPage(currPage + 1);
         }
     }
 
@@ -74,6 +88,13 @@ const AdminPage = ({books, setBookOrder, addBook, deleteBook, editBook, setSearc
             </div>
             <EditBookModal show={showEditBookModal} bookToEdit={bookToEdit} onHideModal={() => setShowEditBookModal(false)} handleSubmit={editBook}/>
             <BooksTable books={books} handleBookOrderChange={setBookOrder} handleDeleteBook={deleteBook} handleEditBookClick={handleEditBook}/>
+            <div className={styles.tableFooter}>
+                <Pagination>
+                    <Pagination.Prev onClick={onPrevPagePress} />
+                    <Pagination.Next onClick={onNextPagePress} />
+                </Pagination>
+            
+            </div>
         </div>
     </div>
 }

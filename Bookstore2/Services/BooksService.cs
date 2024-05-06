@@ -8,6 +8,7 @@ namespace Bookstore2.Services
     public class BooksService
     {
         private readonly IMongoCollection<Book> _books;
+        private const int pageSize = 10;
 
         public BooksService(IOptions<BookstoreDatabaseSettings> bookStoreDatabaseSettings)
         {
@@ -36,16 +37,17 @@ namespace Bookstore2.Services
             return await _books.Find(book => book.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<List<Book>> GetBooks(string? searchString)
+        public async Task<List<Book>> GetBooks(int pageIndex, string? searchString)
         {
             var books = await _books.Find(book => true).ToListAsync();
             if (!string.IsNullOrEmpty(searchString))
             {
                 return books.Where(b => b.BookName.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
                                     b.Author.Contains(searchString, StringComparison.OrdinalIgnoreCase) || 
-                                    b.Category.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+                                    b.Category.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                    .OrderByDescending(book => book.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             }
-            return books;
+            return books.OrderByDescending(book => book.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();         
         }
 
         public async Task UpdateBook(string Id, Book updatedBook)
@@ -53,7 +55,7 @@ namespace Bookstore2.Services
             await _books.ReplaceOneAsync(b => b.Id == Id, updatedBook);
         }
 
-        public async Task<List<Book>> GetSortedBooks(string sortedOrder, string? searchString)
+        public async Task<List<Book>> GetSortedBooks(string sortedOrder, int pageIndex, string? searchString)
         {
             var books = await _books.Find(book => true).ToListAsync();
             if (!string.IsNullOrEmpty(searchString))
@@ -62,30 +64,31 @@ namespace Bookstore2.Services
                                     b.Author.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
                                     b.Category.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
             }
+      
             switch (sortedOrder)
             {
                 case "name":
-                    return books.OrderBy(book => book.BookName).ToList();
+                    return books.OrderBy(book => book.BookName).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 case "name_desc":
-                    return books.OrderByDescending(book => book.BookName).ToList();
+                    return books.OrderByDescending(book => book.BookName).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 case "author":
-                    return books.OrderBy(book => book.Author).ToList();
+                    return books.OrderBy(book => book.Author).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 case "author_desc":
-                    return books.OrderByDescending(book => book.Author).ToList();
+                    return books.OrderByDescending(book => book.Author).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 case "price":
-                    return books.OrderBy(book => book.Price).ToList();
+                    return books.OrderBy(book => book.Price).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 case "price_desc":
-                    return books.OrderByDescending(book => book.Price).ToList();
+                    return books.OrderByDescending(book => book.Price).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 case "category":
-                    return books.OrderBy(book => book.Category).ToList();
+                    return books.OrderBy(book => book.Category).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 case "category_desc":
-                    return books.OrderByDescending(book => book.Category).ToList();
+                    return books.OrderByDescending(book => book.Category).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 case "quantity":
-                    return books.OrderBy(book => book.Quantity).ToList();
+                    return books.OrderBy(book => book.Quantity).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 case "quantity_desc":
-                    return books.OrderByDescending(book => book.Quantity).ToList();
+                    return books.OrderByDescending(book => book.Quantity).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                 default:
-                    return books.OrderBy(book => book.BookName).ToList();
+                    return books.OrderBy(book => book.BookName).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             }
         }
 

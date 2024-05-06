@@ -13,44 +13,61 @@ const App = () => {
   const BASE_URL = 'https://localhost:7235/api/Bookstore';
   const [books, setBooks] = useState<Book[]>([]);
   const [sortOrder, setSortOrder] = useState<string>("");
-  const [searchString, setSearchString] = useState<string>('');
+  const [searchString, setSearchString] = useState<string>("");
+  const [currIndex, setCurrIndex] = useState<number>(1);
 
   useEffect(() => {
-    getBooks();
+    getBooks(1);
   }, []);
 
   useEffect(() => {
+    setCurrIndex(1);
     if (searchString) {
-      getSortedBooks(sortOrder, searchString);
+      getSortedBooks(sortOrder, 1, searchString);
     } else {
-      getSortedBooks(sortOrder);
+      if (sortOrder !== "") getSortedBooks(sortOrder, 1);
     }
   }, [sortOrder]);
 
   useEffect(() => {
+    setCurrIndex(1);
+    setSortOrder("");
     if (sortOrder) {
-      getSortedBooks(sortOrder, searchString);
+      getSortedBooks(sortOrder, 1, searchString);
     } else {
-      getBooks(searchString);
+      getBooks(1, searchString);
     }
   }, [searchString])
+
+  useEffect(() => {
+    if (currIndex > 0) {
+      if (sortOrder) {
+        getSortedBooks(sortOrder, currIndex, searchString);
+      } else {
+        getBooks(currIndex, searchString);
+      }
+    }
+  }, [currIndex])
 
   const addBook = async(book: Book) => {
     try {
       await axios.post(BASE_URL, book);
-      getBooks();
+      setSortOrder("");
+      setSearchString("");
+      setCurrIndex(1);
+      getBooks(1);
     } catch (e) {
       console.log('Error in addBook: ', e)
     }
   }
 
-  const getBooks = async(searchString?: string) => {
+  const getBooks = async(pageIndex: number, searchString?: string) => {
     try {
       if (searchString) {
-        const { data } = await axios.get(`${BASE_URL}`, {params: {searchString: searchString}});
+        const { data } = await axios.get(`${BASE_URL}/${pageIndex}`, {params: {searchString: searchString}});
         setBooks(data);
       } else {
-        const { data } = await axios.get(`${BASE_URL}`);
+        const { data } = await axios.get(`${BASE_URL}/${pageIndex}`);
         setBooks(data);
       }
     } catch (e) {
@@ -58,13 +75,13 @@ const App = () => {
     } 
   }
 
-  const getSortedBooks = async(sortOrder: string, searchString?: string) => {
+  const getSortedBooks = async(sortOrder: string, pageIndex: number, searchString?: string) => {
     try {
       if (searchString) {
-        const { data } = await axios.get(`${BASE_URL}/${sortOrder}`, {params: {searchString: searchString}});
+        const { data } = await axios.get(`${BASE_URL}/${sortOrder}/${pageIndex}`, {params: {searchString: searchString}});
         setBooks(data);
       } else {
-        const { data } = await axios.get(`${BASE_URL}/${sortOrder}`);
+        const { data } = await axios.get(`${BASE_URL}/${sortOrder}/${pageIndex}`);
         setBooks(data);
       }
       
@@ -76,7 +93,7 @@ const App = () => {
   const editBook = async(book: Book) => {
     try {
       await axios.put(`${BASE_URL}/${book.id}`, book);
-      getBooks();
+      getSortedBooks(sortOrder, currIndex, searchString);
     } catch (e) {
       console.log('Error in editBook: ', e);
     }
@@ -85,7 +102,7 @@ const App = () => {
   const deleteBook = async(bookId: string) => {
     try {
       await axios.delete(`${BASE_URL}/${bookId}`);
-      getBooks();
+      getSortedBooks(sortOrder, currIndex, searchString);
     } catch (e) {
       console.log('Error in deleteBook: ', e);
     }
@@ -93,7 +110,15 @@ const App = () => {
 
   return <div className="app-container">
     <AppHeader />
-    <AdminPage books={books} setBookOrder={setSortOrder} addBook={addBook} deleteBook={deleteBook} editBook={editBook} setSearchQuery={setSearchString}/>
+    <AdminPage books={books} 
+      currPage={currIndex} 
+      setBookOrder={setSortOrder} 
+      addBook={addBook} 
+      deleteBook={deleteBook} 
+      editBook={editBook} 
+      setSearchQuery={setSearchString} 
+      setCurrPage={setCurrIndex}
+    />
   </div>
 }
 
