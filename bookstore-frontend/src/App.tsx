@@ -22,17 +22,19 @@ const App = () => {
 
   useEffect(() => {
     setCurrIndex(1);
-    if (searchString) {
-      getSortedBooks(sortOrder, 1, searchString);
-    } else {
-      if (sortOrder !== "") getSortedBooks(sortOrder, 1);
+    if (sortOrder !== "") {
+      if (searchString !== "") {
+        getSortedBooks(sortOrder, 1, searchString);
+      } else {
+        getSortedBooks(sortOrder, 1);
+      }
     }
   }, [sortOrder]);
 
   useEffect(() => {
     setCurrIndex(1);
     setSortOrder("");
-    if (sortOrder) {
+    if (sortOrder !== "") {
       getSortedBooks(sortOrder, 1, searchString);
     } else {
       getBooks(1, searchString);
@@ -41,7 +43,7 @@ const App = () => {
 
   useEffect(() => {
     if (currIndex > 0) {
-      if (sortOrder) {
+      if (sortOrder !== "") {
         getSortedBooks(sortOrder, currIndex, searchString);
       } else {
         getBooks(currIndex, searchString);
@@ -63,7 +65,7 @@ const App = () => {
 
   const getBooks = async(pageIndex: number, searchString?: string) => {
     try {
-      if (searchString) {
+      if (searchString !== "") {
         const { data } = await axios.get(`${BASE_URL}/${pageIndex}`, {params: {searchString: searchString}});
         setBooks(data);
       } else {
@@ -77,14 +79,17 @@ const App = () => {
 
   const getSortedBooks = async(sortOrder: string, pageIndex: number, searchString?: string) => {
     try {
-      if (searchString) {
-        const { data } = await axios.get(`${BASE_URL}/${sortOrder}/${pageIndex}`, {params: {searchString: searchString}});
-        setBooks(data);
+      if (sortOrder !== "") {
+        if (searchString !== "") {
+          const { data } = await axios.get(`${BASE_URL}/${sortOrder}/${pageIndex}`, {params: {searchString: searchString}});
+          setBooks(data);
+        } else {
+          const { data } = await axios.get(`${BASE_URL}/${sortOrder}/${pageIndex}`);
+          setBooks(data);
+        }
       } else {
-        const { data } = await axios.get(`${BASE_URL}/${sortOrder}/${pageIndex}`);
-        setBooks(data);
+        getBooks(pageIndex, searchString);
       }
-      
     } catch (e) {
       console.log('Error in getSortedBooks: ', e);
     }
@@ -102,7 +107,7 @@ const App = () => {
   const deleteBook = async(bookId: string) => {
     try {
       await axios.delete(`${BASE_URL}/${bookId}`);
-      getSortedBooks(sortOrder, currIndex, searchString);
+      getBooks(1);
     } catch (e) {
       console.log('Error in deleteBook: ', e);
     }
