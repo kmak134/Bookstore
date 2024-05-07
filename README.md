@@ -5,22 +5,22 @@ Bookstore Inventory Management Project to practice full-stack development. React
 ![alt text](AppDemoFiles/homescreen.png)
 
 ## Add Book 
-<img src="AppDemoFiles/AddBookDemo.gif" alt="Add Book Demo Gif" width="720">
+<img src="AppDemoFiles/AddBookDemo1.gif" alt="Add Book Demo Gif">
 
 ## Edit Book 
-<img src="AppDemoFiles/EditBookDemo.gif" alt="Edit Book Demo Gif" width="720">
+<img src="AppDemoFiles/EditBookDemo1.gif" alt="Edit Book Demo Gif">
 
 ## Delete Book
-<img src="AppDemoFiles/DeleteBookDemo.gif" alt="Delete Book Demo Gif" width="720">
+<img src="AppDemoFiles/DeleteBookDemo1.gif" alt="Delete Book Demo Gif">
 
 ## Search Books
-<img src="AppDemoFiles/SearchDemo.gif" alt="Search Demo Gif" width="720">
+<img src="AppDemoFiles/SearchDemo1.gif" alt="Search Demo Gif">
 
 ## Sort Books
-<img src="AppDemoFiles/SortDemo.gif" alt="Sort Demo Gif" width="720">
+<img src="AppDemoFiles/SortDemo1.gif" alt="Sort Demo Gif">
 
 ## Pagination
-<img src="AppDemoFiles/PaginationDemo.gif" alt="Pagination Demo Gif" width="720">
+<img src="AppDemoFiles/PaginationDemo1.gif" alt="Pagination Demo Gif">
 
 
 
